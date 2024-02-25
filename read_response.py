@@ -2,12 +2,12 @@ import json
 import os
 
 
-def process_response(file_path):
+def process_response(file_path, prior_exchange_num=3):
     response_string = ""
 
     if os.path.isfile(file_path):
         with open(file_path, 'r') as f:
-            data = json.load(f)
+            data = json.load(f)[-prior_exchange_num*2:]
 
         if isinstance(data, list):
             for message in data:
@@ -23,7 +23,7 @@ def process_response(file_path):
     return response_string
 
 
-# Example usage:
+# Example usage, with 1 previous exchange:
 if __name__ == '__main__':
-    test_string = process_response('response.json')
+    test_string = process_response('response.json', 1)
     print(test_string)

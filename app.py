@@ -124,8 +124,8 @@ if st.session_state.chat_text:
         tts(last_assistant_reply)
 
 
-# Display the response_string in Streamlit
-response_string = process_response('response.json')
+# Display the Conversation History in Streamlit
+response_string = process_response('response.json', 3)
 
 if response_string:
     st.write('---')
