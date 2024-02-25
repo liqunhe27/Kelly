@@ -22,7 +22,7 @@ def get_response(conversational_messages, prior_exchange_num=3, prompt='advanced
     1. Sensible and logical
     2. Specific to the user's input
     3. Emotionally connected
-    4. Mindful of social contexts and situations in the conversation
+    4. Considering social contexts and situations in the conversation
     5. Interesting and engaging for audiences
     6. Encourage further conversation"""
 
