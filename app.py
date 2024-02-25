@@ -97,7 +97,7 @@ with st.container():
 
     with right:
         st.subheader('Hi, I\'d love to chat with you ❤️')
-        st.write('Kelly V0.22b _ 25Feb')
+        st.write('Kelly V0.22c _ 25Feb')
         st.write('Press Record to say something')
 
         rec_button = st.button(

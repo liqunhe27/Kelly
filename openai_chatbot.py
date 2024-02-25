@@ -18,13 +18,11 @@ def get_response(conversational_messages, prior_exchange_num=3, prompt='advanced
     by discussing {topic} in a casual and informal way."""
 
     advanced_messages = """\n
-    Make sure your responses are:
-    1. Sensible and logical
-    2. Specific to the user's input
-    3. Emotionally connected
-    4. Considering social contexts and situations in the conversation
-    5. Interesting and engaging for audiences
-    6. Encourage further conversation"""
+    Ensure your responses are:
+    1. Brief, like everyday small talk
+    2. Show empathy when needed
+    3. Friendly, interesting, with a sense of humor
+    4. Prompt further discussion by asking follow-up questions."""
 
     if prompt == 'advanced':
         sys_message = basic_message + advanced_messages
