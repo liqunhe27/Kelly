@@ -81,7 +81,7 @@ def callback_record():
     # Add user message to the conversation history
     conversation.append({"role": "user", "content": single_turn})
 
-    response = get_response(conversation, 3)  # Through OpenAI API, with 3 preceding exchanges
+    response = get_response(conversation, 3, 'advanced')  # Through OpenAI API, with 3 preceding exchanges
     conversation.append({"role": "assistant", "content": response})
 
     json.dump(conversation, open('response.json', 'wt'))
@@ -97,7 +97,7 @@ with st.container():
 
     with right:
         st.subheader('Hi, I\'d love to chat with you ❤️')
-        st.write('Kelly V0.22 _ 25Feb')
+        st.write('Kelly V0.22b _ 25Feb')
         st.write('Press Record to say something')
 
         rec_button = st.button(
