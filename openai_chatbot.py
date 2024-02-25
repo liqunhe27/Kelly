@@ -10,13 +10,13 @@ client = OpenAI(api_key=api_key)
 
 
 # Call the ChatGPT API to get a ChatGPT’s response
-def get_response(conversational_messages):
+def get_response(conversational_messages, prior_exchange_num=3):
     topic = 'daily life'
     sys_message = f"""
         Your role is to assist non-native L2 learners in improving their oral language proficiency 
         by discussing {topic}"""
 
-    conversation = [{"role": "system", "content": sys_message}] + conversational_messages
+    conversation = [{"role": "system", "content": sys_message}] + conversational_messages[-prior_exchange_num*2:]
 
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",

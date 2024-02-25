@@ -81,7 +81,7 @@ def callback_record():
     # Add user message to the conversation history
     conversation.append({"role": "user", "content": single_turn})
 
-    response = get_response(conversation)
+    response = get_response(conversation, 3)  # Through OpenAI API, with 3 preceding exchanges
     conversation.append({"role": "assistant", "content": response})
 
     json.dump(conversation, open('response.json', 'wt'))
