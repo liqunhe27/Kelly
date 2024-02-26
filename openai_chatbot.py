@@ -28,10 +28,11 @@ def get_response(conversational_messages, prior_exchange_num=3, prompt='advanced
         sys_message = basic_message + advanced_messages
     else:
         sys_message = basic_message
+    # print('prompt_used =', sys_message)
 
-    print('prompt_used =', sys_message)
-
-    conversation = [{"role": "system", "content": sys_message}] + conversational_messages[-prior_exchange_num*2:]
+    conversation = [{"role": "system", "content": sys_message}] + (
+        conversational_messages[-prior_exchange_num * 2:] if prior_exchange_num != 0 else conversational_messages)
+    # print(conversation)
 
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
