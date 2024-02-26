@@ -13,5 +13,5 @@ def get_completions(test_input, num_completions=5):
 
 
 # Get completions for the test question
-test_question = "Any suggestions for traveling in Chengdu?"
-get_completions(test_question, num_completions=1)
+test_question = "Any suggestions for visiting Chengdu?"
+get_completions(test_question, num_completions=5)
