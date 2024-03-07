@@ -5,9 +5,7 @@ import os
 from openai import OpenAI
 
 # Initialise the OpenAI client
-with open(os.path.expanduser(os.path.join(os.getcwd(), 'OPENAI_API_KEY.txt')), 'r') as f:
-    api_key = f.read().strip()  # read the key
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def get_transcription(audio_file_path):

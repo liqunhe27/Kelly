@@ -4,9 +4,7 @@ import os
 from openai import OpenAI
 
 # Initialise the OpenAI client
-with open(os.path.expanduser(os.path.join(os.path.dirname(__file__), 'OPENAI_API_KEY.txt')), 'r') as f:
-    api_key = f.read().strip()  # read the key
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 # Call the ChatGPT API to get a ChatGPT’s response

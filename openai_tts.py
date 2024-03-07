@@ -1,13 +1,12 @@
 # component 4: Call the OpenAPI TTS api
 import os
+import openai
 from openai import OpenAI
 from pydub import AudioSegment
 from pydub.playback import play
 
 # Initialise the OpenAI client
-with open(os.path.expanduser(os.path.join(os.path.dirname(__file__), 'OPENAI_API_KEY.txt')), 'r') as f:
-    api_key = f.read().strip()  # read the key
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def tts(text, mute=False):

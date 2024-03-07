@@ -14,11 +14,10 @@ from openai_tts import tts
 from read_response import process_response
 
 # Initialise the OpenAI client
-with open(os.path.expanduser(os.path.join(os.path.dirname(__file__), 'OPENAI_API_KEY.txt')), 'r') as f:
-    api_key = f.read().strip()  # read the key
+os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 
-# client = OpenAI(api_key=api_key)
-client = OpenAI(api_key=api_key)
+# Log version information
+version_info = 'Kelly V0.3 _ 07Mar'
 
 # Load animation URL
 LOTTIE_URL = 'https://assets6.lottiefiles.com/packages/lf20_6e0qqtpa.json'
@@ -97,7 +96,7 @@ with st.container():
 
     with right:
         st.subheader('Hi, I\'d love to chat with you ❤️')
-        st.write('Kelly V0.22c _ 25Feb')
+        st.write(version_info)
         st.write('Press Record to say something')
 
         rec_button = st.button(

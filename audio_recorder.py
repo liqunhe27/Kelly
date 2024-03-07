@@ -7,7 +7,7 @@ FORMAT = pyaudio.paInt16  # Audio format
 CHANNELS = 1  # Number of audio channels
 RATE = 16000  # Sampling rate
 CHUNK = 1024  # Number of audio frames per buffer
-RECORD_SECONDS = 5  # Duration of recording in seconds
+RECORD_SECONDS = 6  # Duration of recording in seconds
 RECORDING_FILENAME = 'recording.wav'  # Name of output file
 
 
