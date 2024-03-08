@@ -16,7 +16,11 @@ def tts(text, mute=False):
         input=text
     )
 
-    speech_file_path = os.path.expanduser(os.path.join(os.getcwd(), 'temp.wav'))
+    speech_file_path = 'temp.wav'
+    if not os.path.exists(speech_file_path):
+        os.makedirs(os.path.dirname(speech_file_path), exist_ok=True)
+
+    speech_file_path = os.path.expanduser(os.path.join(os.getcwd(), speech_file_path))
 
     response.stream_to_file(speech_file_path)
 
