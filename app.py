@@ -1,13 +1,11 @@
-# Build the app interface using Streamlit
 import os
-from openai import OpenAI
 import streamlit as st
 from streamlit_lottie import st_lottie
 import requests
 import json
 
 # Import local libraries
-from audio_recorder import record
+from streamlit_mic_recorder import mic_recorder  # Using a new streamlit component
 from whisper_transcriber import get_transcription
 from openai_chatbot import get_response
 from openai_tts import tts
@@ -17,11 +15,15 @@ from read_response import process_response
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 
 # Log version information
-version_info = 'Kelly V0.3 _ 07Mar'
+version_info = 'Kelly V0.4 _ 08Mar'
+
+# Initialise voice recording
+INPUT_WAVFILE = 'prompt.wav'
+if os.path.exists(INPUT_WAVFILE):
+    os.remove(INPUT_WAVFILE)
 
 # Load animation URL
 LOTTIE_URL = 'https://assets6.lottiefiles.com/packages/lf20_6e0qqtpa.json'
-INPUT_WAVFILE = 'prompt.wav'
 
 
 # Function to load Lottie animation from URL
@@ -36,56 +38,12 @@ def load_lottie(url):
 lottie_anim = load_lottie(LOTTIE_URL)
 
 # Set page configuration and initialize session state variables
-st.set_page_config(page_title="Test_version_Kelly", page_icon='', layout='centered')
+st.set_page_config(page_title="Internal_Beta_Kelly", page_icon='', layout='centered')
 
-if "is_recording" not in st.session_state:
-    st.session_state.is_recording = False
 if "prompt_text" not in st.session_state:
     st.session_state.prompt_text = None
 if "chat_text" not in st.session_state:
     st.session_state.chat_text = None
-
-
-# Define button callback function for recording
-#  A callback is a function triggered by an event, enabling dynamic and responsive behaviours.
-# @st.cache(allow_output_mutation=True)
-@st.cache_data
-def create_chat():
-    return []
-
-
-def callback_record():
-    st.session_state.is_recording = True
-    prompt_box.write("I'm listening ...")
-
-    # Record the prompt
-    record(filename=INPUT_WAVFILE)
-    # prompt_box.write("Processing the prompt ...")
-
-    st.session_state.is_recording = False
-
-    # Process recording
-    single_turn = get_transcription(INPUT_WAVFILE)
-
-    # Record conversation
-    if 'conversation' not in st.session_state:
-        st.session_state.conversation = []
-
-    conversation = st.session_state.conversation
-
-    # Clear conversation history when the user starts a new conversation
-    # if st.button("Start New Conversation"):
-    #    conversation.clear()
-
-    # Add user message to the conversation history
-    conversation.append({"role": "user", "content": single_turn})
-
-    response = get_response(conversation, 3, 'advanced')  # Through OpenAI API, with 3 preceding exchanges
-    conversation.append({"role": "assistant", "content": response})
-
-    json.dump(conversation, open('response.json', 'wt'))
-
-    st.session_state.chat_text = conversation
 
 
 # Set up the interface layout including Lottie animation, title, and record button
@@ -99,14 +57,41 @@ with st.container():
         st.write(version_info)
         st.write('Press Record to say something')
 
-        rec_button = st.button(
-            label="Record :microphone:", type='primary',
-            on_click=callback_record,
-            disabled=st.session_state.is_recording)
+        audio = mic_recorder(start_prompt="Start Recording 🎤", stop_prompt="️Stop", key='recorder', format='wav',
+                             use_container_width=True)  # the new streamlit component
 
-        prompt_box = st.empty()
-        if st.session_state.prompt_text:
-            prompt_box.write(f'I heard you saying: {st.session_state.prompt_text}')
+        if audio:
+            # Write the recorded audio to the file
+            with open(INPUT_WAVFILE, 'wb') as f:
+                f.write(audio['bytes'])
+
+        if os.path.exists(INPUT_WAVFILE):
+            # transcribe recording
+            single_turn = get_transcription(INPUT_WAVFILE)
+
+            # Record conversation
+            if 'conversation' not in st.session_state:
+                st.session_state.conversation = []
+
+            conversation = st.session_state.conversation
+
+            # Clear conversation history when the user starts a new conversation
+            # if st.button("Start New Conversation"):
+            #    conversation.clear()
+
+            # Add user message to the conversation history
+            conversation.append({"role": "user", "content": single_turn})
+
+            response = get_response(conversation, 3, 'advanced')  # Through OpenAI API, with 3 preceding exchanges
+            conversation.append({"role": "assistant", "content": response})
+
+            json.dump(conversation, open('response.json', 'wt'))
+
+            st.session_state.chat_text = conversation
+
+            prompt_box = st.empty()
+            if st.session_state.prompt_text:
+                prompt_box.write(f'I heard you saying: {st.session_state.prompt_text}')
 
 
 # Display recording result and chat information
