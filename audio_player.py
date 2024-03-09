@@ -21,7 +21,7 @@ def play(file_path: str):
             </audio>
             """
         # Simulate a delay to show the spinner
-        time.sleep(1)
+        time.sleep(2)
         # Render the audio player using Markdown
         placeholder.markdown(md, unsafe_allow_html=True)
 
