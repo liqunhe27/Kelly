@@ -1,7 +1,7 @@
 # component 4: Call the OpenAPI TTS api
 import os
 from openai import OpenAI
-from audio_player import play
+from audio_player_v2 import play
 
 # Initialise the OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
