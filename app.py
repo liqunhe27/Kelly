@@ -15,7 +15,7 @@ from read_response import process_response
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 
 # Log version information
-version_info = 'Kelly V0.4 _ 08Mar'
+version_info = 'Kelly V0.5 _ 09Mar🎉'
 
 # Initialise voice recording
 INPUT_WAVFILE = 'prompt.wav'

@@ -1,9 +1,7 @@
 # component 4: Call the OpenAPI TTS api
 import os
-import openai
 from openai import OpenAI
-from pydub import AudioSegment
-from pydub.playback import play
+from audio_player import play
 
 # Initialise the OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -12,7 +10,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def tts(text, mute=False):
     response = client.audio.speech.create(
         model="tts-1",
-        voice="nova",
+        voice="echo",
         input=text
     )
 
@@ -26,8 +24,7 @@ def tts(text, mute=False):
 
     # play it
     if not mute:
-        voice_response = AudioSegment.from_file(speech_file_path)
-        play(voice_response)
+        play(speech_file_path)
 
 
 # test
