@@ -20,7 +20,8 @@ def play(file_path: str):
             Your browser does not support the audio element.
             </audio>
             """
-        # Simulate a delay to show the spinner
+
+        placeholder.empty()
         time.sleep(1)
         # Render the audio player using Markdown
         placeholder.markdown(md, unsafe_allow_html=True)
