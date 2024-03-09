@@ -14,7 +14,7 @@ def tts(text, mute=False):
         input=text
     )
 
-    speech_file_name = 'temp.wav'
+    speech_file_name = 'temp.mp3'
     speech_file_path = os.path.join(os.getcwd(), speech_file_name)
 
     if not os.path.exists(speech_file_path):
