@@ -10,6 +10,7 @@ from whisper_transcriber import get_transcription
 from openai_chatbot import get_response
 from openai_tts import tts
 from read_response import process_response
+from play_welcome import play_welcome
 
 # Initialise the OpenAI client
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
@@ -55,6 +56,10 @@ with st.container():
     with right:
         st.subheader('Hi, I\'d love to chat with you ❤️')
         st.write(version_info)
+
+        if st.button("Hi, I'm Kelly!"):
+            play_welcome()
+
         st.write('Press Record to say something')
 
         audio = mic_recorder(start_prompt="Start Recording 🎤", stop_prompt="️Stop", key='recorder', format='wav',
