@@ -15,17 +15,19 @@ def play(file_path: str):
         placeholder = st.empty()
         # Construct the HTML for the audio player
         md = f"""
-            <audio autoplay playsinline>
+            <audio autoplay>
             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
             Your browser does not support the audio element.
             </audio>
             """
 
-        # time.sleep(1)
+        time.sleep(1)  # seems to be necessary
+
         # Render the audio player using Markdown
         placeholder.markdown(md, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
     st.write("# Auto-playing Audio 🎵!")
-    play("test_recording.wav")
+    if st.button('Play Audio'):
+        play("test_recording.wav")
