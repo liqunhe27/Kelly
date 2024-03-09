@@ -10,31 +10,21 @@ def play(file_path: str):
         data = f.read()
         # Encode the audio data to base64
         b64 = base64.b64encode(data).decode()
+        # Create an empty placeholder
+        placeholder = st.empty()
         # Construct the HTML for the audio player
         md = f"""
-        <script>
-            Vue.prototype.innerAudioContext = uni.createInnerAudioContext();
-
-            Vue.prototype.playAudio = function(base64Audio) {{
-                console.log('Playing');
-                var innerAudioContext = Vue.prototype.innerAudioContext;
-                innerAudioContext.autoplay = true;
-                innerAudioContext.src = 'data:audio/wav;base64,' + base64Audio;
-                innerAudioContext.play();
-            }}
-
-            Vue.prototype.playStop = function() {{
-                console.log('Stopping');
-                var innerAudioContext = Vue.prototype.innerAudioContext;
-                innerAudioContext.stop();
-            }}
-        </script>
-        """
+            <audio autoplay>
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            Your browser does not support the audio element.
+            </audio>
+            """
 
         # Render the audio player using Markdown
-        st.markdown(md, unsafe_allow_html=True)
+        placeholder.markdown(md, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
-    st.write("# Auto-playing Audio 🎵!")
-    play_audio("test_recording.wav")
+    st.write("# Auto-playing Audio v2 🎵!")
+    if st.button('Play Audio'):
+        play("test_recording.wav")

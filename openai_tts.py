@@ -1,7 +1,7 @@
 # component 4: Call the OpenAPI TTS api
 import os
 from openai import OpenAI
-from audio_player_v2 import play
+from audio_player import play
 
 # Initialise the OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -10,7 +10,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def tts(text, mute=False):
     response = client.audio.speech.create(
         model="tts-1",
-        voice="echo",
+        voice="nova",
         input=text
     )
 
@@ -30,4 +30,4 @@ def tts(text, mute=False):
 # test
 if __name__ == '__main__':
     # run the defined function
-    tts('this is a test')
+    tts('Hello there, I\'m Kelly from London. I\'m happy to meet you.', mute=True)
