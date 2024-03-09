@@ -15,9 +15,9 @@ def play(file_path: str):
         placeholder = st.empty()
         # Construct the HTML for the audio player
         md = f"""
-            <audio autoplay>
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-            Your browser does not support the audio element.
+            <audio controls autoplay>
+                <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                Your browser does not support the audio element.
             </audio>
             """
 
