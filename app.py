@@ -90,7 +90,7 @@ with st.container():
             # Update the chat_text dictionary with the conversation for the current user
             st.session_state.chat_text[st.session_state.username] = conversation
 
-            json.dump(conversation, open('response.json', 'wt'))
+            json.dump(st.session_state.chat_text, open('response.json', 'wt'))
 
             prompt_box = st.empty()
             if st.session_state.prompt_text:
@@ -113,7 +113,7 @@ if st.session_state.chat_text:
 
 
 # Display the Conversation History in Streamlit
-response_string = process_response('response.json', 3)
+response_string = process_response('response.json', st.session_state.username, 3)
 
 if response_string:
     st.write('---')
