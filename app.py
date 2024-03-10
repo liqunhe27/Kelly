@@ -15,7 +15,7 @@ from read_response import process_response
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 
 # Log version information
-version_info = 'Kelly V0.5 _ 09Mar🎉'
+version_info = 'Kelly V0.6 _ 10Mar🎉'
 
 # Initialise voice recording
 INPUT_WAVFILE = 'prompt.wav'
@@ -43,7 +43,9 @@ st.set_page_config(page_title="Internal_Beta_Kelly", page_icon='', layout='cente
 if "prompt_text" not in st.session_state:
     st.session_state.prompt_text = None
 if "chat_text" not in st.session_state:
-    st.session_state.chat_text = None
+    st.session_state.chat_text = {}
+if "username" not in st.session_state:
+    st.session_state.username = None
 
 
 # Set up the interface layout including Lottie animation, title, and record button
@@ -56,6 +58,9 @@ with st.container():
         st.subheader('Hi, I\'d love to chat with you ❤️')
         st.write(version_info)
         st.write('Press Record to say something')
+
+        # Add username input
+        st.session_state.username = st.text_input('Enter your username')
 
         audio = mic_recorder(start_prompt="Start Recording 🎤", stop_prompt="️Stop", key='recorder', format='wav',
                              use_container_width=True)  # the new streamlit component
@@ -70,24 +75,22 @@ with st.container():
             single_turn = get_transcription(INPUT_WAVFILE)
 
             # Record conversation
-            if 'conversation' not in st.session_state:
-                st.session_state.conversation = []
+            if st.session_state.username in st.session_state.chat_text:
+                conversation = st.session_state.chat_text[st.session_state.username]
+            else:
+                conversation = []
 
-            conversation = st.session_state.conversation
-
-            # Clear conversation history when the user starts a new conversation
-            # if st.button("Start New Conversation"):
-            #    conversation.clear()
-
-            # Add user message to the conversation history
+            # Add user message to the conversation history with username
             conversation.append({"role": "user", "content": single_turn})
 
             response = get_response(conversation, 3, 'advanced')  # Through OpenAI API, with 3 preceding exchanges
+
             conversation.append({"role": "assistant", "content": response})
 
-            json.dump(conversation, open('response.json', 'wt'))
+            # Update the chat_text dictionary with the conversation for the current user
+            st.session_state.chat_text[st.session_state.username] = conversation
 
-            st.session_state.chat_text = conversation
+            json.dump(conversation, open('response.json', 'wt'))
 
             prompt_box = st.empty()
             if st.session_state.prompt_text:
@@ -96,10 +99,11 @@ with st.container():
 
 # Display recording result and chat information
 if st.session_state.chat_text:
-    # Extract 'assistant' replies
-    assistant_replies = [message['content'] for message in st.session_state.chat_text if message.get('role') == 'assistant']
+    # Extract 'assistant' replies for the current user
+    assistant_replies = [message['content'] for message in st.session_state.chat_text.get(st.session_state.username, [])
+                         if message.get('role') == 'assistant']
 
-    # Perform text-to-speech conversion only for the last 'assistant' reply
+    # Perform text-to-speech conversion only for the last 'assistant' reply for the current user
     if assistant_replies:
         last_assistant_reply = assistant_replies[-1]
         st.write('---')
@@ -113,5 +117,5 @@ response_string = process_response('response.json', 3)
 
 if response_string:
     st.write('---')
-    st.subheader('Conversation History')
+    st.subheader('Conversation History for ' + st.session_state.username)  # Display history for the current user
     st.write(response_string)
