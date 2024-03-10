@@ -24,6 +24,9 @@ INPUT_WAVFILE = 'prompt.wav'
 if os.path.exists(INPUT_WAVFILE):
     os.remove(INPUT_WAVFILE)
 
+# Set whether to display conversation text
+_show_history = False
+
 # Load animation URL
 LOTTIE_URL = 'https://assets6.lottiefiles.com/packages/lf20_6e0qqtpa.json'
 
@@ -118,7 +121,7 @@ if st.button('Get Conversation History'):
             st.write(f"User '{st.session_state.username}' not found in the conversation data.")
 
 
-# Display recording result and chat information
+#  Output responses
 if st.session_state.chat_text:
     # Extract 'assistant' replies for the current user
     assistant_replies = [message['content'] for message in st.session_state.chat_text.get(st.session_state.username, [])
@@ -127,16 +130,19 @@ if st.session_state.chat_text:
     # Perform text-to-speech conversion only for the last 'assistant' reply for the current user
     if assistant_replies:
         last_assistant_reply = assistant_replies[-1]
-        st.write('---')
-        st.subheader('Last Assistant Reply')
-        st.write(last_assistant_reply)
         tts(last_assistant_reply)
 
+        # Display recording result
+        if _show_history:
+            st.write('---')
+            st.subheader('Last Assistant Reply')
+            st.write(last_assistant_reply)
 
 # Display the Conversation History in Streamlit
-response_string = process_response('response.json', st.session_state.username, 3)
+if _show_history:
+    response_string = process_response('response.json', st.session_state.username, 3)
 
-if response_string:
-    st.write('---')
-    st.subheader('Conversation History for ' + st.session_state.username)  # Display history for the current user
-    st.write(response_string)
+    if response_string:
+        st.write('---')
+        st.subheader('Conversation History for ' + st.session_state.username)  # Display history for the current user
+        st.write(response_string)
