@@ -22,10 +22,12 @@ def data_to_excel(json_data, username):
     })
 
     # Write to Excel
-    excel_file = f'conversation_history_{username}.xlsx'
-    df.to_excel(excel_file, index=True)
+    excel_file_name = f'conversation_history_{username}.xlsx'
+    df.to_excel(excel_file_name, index=True)
 
-    print(f"Excel file '{excel_file}' has been created.")
+    print(f"Excel file '{excel_file_name}' has been created.")
+
+    return excel_file_name
 
 
 if __name__ == "__main__":
@@ -33,4 +35,4 @@ if __name__ == "__main__":
     file_path = 'response.json'
     with open(file_path, 'r') as file:
         _data = file.read()
-    data_to_excel(_data,'Liqun')
+    data_to_excel(_data, 'Liqun')

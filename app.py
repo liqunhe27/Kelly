@@ -17,7 +17,7 @@ from data_to_excel import data_to_excel
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 
 # Log version information
-version_info = 'Kelly V0.6 _ 10Mar🎉'
+version_info = 'Kelly V0.7 _ 10Mar🎉'
 
 # Initialise voice recording
 INPUT_WAVFILE = 'prompt.wav'
@@ -98,8 +98,9 @@ with st.container():
             if st.session_state.prompt_text:
                 prompt_box.write(f'I heard you saying: {st.session_state.prompt_text}')
 
+
 # Add a download button for the conversation history
-if st.button('Download Conversation History'):
+if st.button('Get Conversation History'):
     with open('response.json', 'r') as file:
         json_data = file.read()
 
