@@ -16,7 +16,7 @@ from data_to_excel import data_to_excel
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 
 # Log version information
-version_info = 'Kelly V0.7 _ 10Mar🎉'
+version_info = 'Kelly V0.7 _ 10Mar_🐱'
 
 # Initialise voice recording
 INPUT_WAVFILE = 'prompt.wav'
