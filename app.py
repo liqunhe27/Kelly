@@ -3,6 +3,7 @@ import streamlit as st
 from streamlit_lottie import st_lottie
 import requests
 import json
+import base64
 
 # Import local libraries
 from streamlit_mic_recorder import mic_recorder  # Using a new streamlit component
@@ -10,6 +11,7 @@ from whisper_transcriber import get_transcription
 from openai_chatbot import get_response
 from openai_tts import tts
 from read_response import process_response
+from data_to_excel import data_to_excel
 
 # Initialise the OpenAI client
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
@@ -95,6 +97,24 @@ with st.container():
             prompt_box = st.empty()
             if st.session_state.prompt_text:
                 prompt_box.write(f'I heard you saying: {st.session_state.prompt_text}')
+
+# Add a download button for the conversation history
+if st.button('Download Conversation History'):
+    with open('response.json', 'r') as file:
+        json_data = file.read()
+
+        if st.session_state.username in json_data:
+            data_to_excel(json_data, st.session_state.username)
+
+            # Provide download button for the Excel file
+            excel_file_path = f'conversation_history_{st.session_state.username}.xlsx'
+            with open(excel_file_path, 'rb') as excel_file:
+                excel_data = excel_file.read()
+                st.download_button(label=f"Download {st.session_state.username}'s Conversation History",
+                                   data=excel_data, file_name=excel_file_path,
+                                   mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        else:
+            st.write(f"User '{st.session_state.username}' not found in the conversation data.")
 
 
 # Display recording result and chat information
