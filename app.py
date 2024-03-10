@@ -3,7 +3,6 @@ import streamlit as st
 from streamlit_lottie import st_lottie
 import requests
 import json
-import base64
 
 # Import local libraries
 from streamlit_mic_recorder import mic_recorder  # Using a new streamlit component
