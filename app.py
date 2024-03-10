@@ -50,6 +50,8 @@ if "chat_text" not in st.session_state:
     st.session_state.chat_text = {}
 if "username" not in st.session_state:
     st.session_state.username = None
+if "not_downloaded" not in st.session_state:
+    st.session_state.not_downloaded = True
 
 
 # Set up the interface layout including Lottie animation, title, and record button
@@ -74,7 +76,41 @@ with st.container():
             with open(INPUT_WAVFILE, 'wb') as f:
                 f.write(audio['bytes'])
 
-        if os.path.exists(INPUT_WAVFILE):
+        # Add a download button for the conversation history
+        if st.button('Get Conversation History'):
+            st.session_state.not_downloaded = False
+
+            # Check if response.json file exists
+            if os.path.exists('response.json'):
+                with open('response.json', 'r') as file:
+                    json_data = file.read()
+
+                    # Check if session_state.username exists
+                    if st.session_state.username:
+                        # Check if the username exists in the conversation data
+                        if st.session_state.username in json_data:
+                            # Convert JSON data to Excel format and save it
+                            excel_file_path = f'conversation_history_{st.session_state.username}.xlsx'
+                            data_to_excel(json_data, st.session_state.username)
+
+                            # Provide download button for the Excel file
+                            if os.path.exists(excel_file_path):
+                                with open(excel_file_path, 'rb') as excel_file:
+                                    excel_data = excel_file.read()
+                                    st.download_button(
+                                        label=f"Download {st.session_state.username}'s Conversation History",
+                                        data=excel_data, file_name=excel_file_path,
+                                        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                            else:
+                                st.write("Excel file not found.")
+                        else:
+                            st.write(f"User '{st.session_state.username}' not found in the conversation data.")
+                    else:
+                        st.write("Please enter a username.")
+            else:
+                st.write("Conversation data file not found.")
+
+        if os.path.exists(INPUT_WAVFILE) and st.session_state.not_downloaded:
             # transcribe recording
             single_turn = get_transcription(INPUT_WAVFILE)
 
@@ -100,40 +136,8 @@ with st.container():
             if st.session_state.prompt_text:
                 prompt_box.write(f'I heard you saying: {st.session_state.prompt_text}')
 
-# Add a download button for the conversation history
-if st.button('Get Conversation History'):
-    # Check if response.json file exists
-    if os.path.exists('response.json'):
-        with open('response.json', 'r') as file:
-            json_data = file.read()
-
-            # Check if session_state.username exists
-            if st.session_state.username:
-                # Check if the username exists in the conversation data
-                if st.session_state.username in json_data:
-                    # Convert JSON data to Excel format and save it
-                    excel_file_path = f'conversation_history_{st.session_state.username}.xlsx'
-                    data_to_excel(json_data, st.session_state.username)
-
-                    # Provide download button for the Excel file
-                    if os.path.exists(excel_file_path):
-                        with open(excel_file_path, 'rb') as excel_file:
-                            excel_data = excel_file.read()
-                            st.download_button(label=f"Download {st.session_state.username}'s Conversation History",
-                                               data=excel_data, file_name=excel_file_path,
-                                               mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                    else:
-                        st.write("Excel file not found.")
-                else:
-                    st.write(f"User '{st.session_state.username}' not found in the conversation data.")
-            else:
-                st.write("Please enter a username.")
-    else:
-        st.write("Conversation data file not found.")
-
-
 #  Output responses
-if st.session_state.chat_text:
+if st.session_state.chat_text and st.session_state.not_downloaded:
     # Extract 'assistant' replies for the current user
     assistant_replies = [message['content'] for message in st.session_state.chat_text.get(st.session_state.username, [])
                          if message.get('role') == 'assistant']
