@@ -13,7 +13,8 @@ def get_transcription(audio_file_path):
         transcription = client.audio.transcriptions.create(
             model="whisper-1",
             file=audio,
-            response_format="text"
+            response_format="text",
+            prompt="Umm, let me think like, hmm... Okay, here's what I'm, like, hello, hi"
         )
     return transcription
 
