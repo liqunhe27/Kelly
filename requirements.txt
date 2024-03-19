@@ -5,3 +5,5 @@ pandas~=1.5.3
 streamlit-mic-recorder
 streamlit-lottie
 openpyxl
+st-files-connection
+s3fs
