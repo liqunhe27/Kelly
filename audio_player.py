@@ -4,7 +4,7 @@ import streamlit as st
 import time
 
 
-def play(file_path: str):
+def play(file_path: str, speed: float = 0.8):
     # Open the WAV audio file
     with open(file_path, "rb") as f:
         # Read the audio data
@@ -15,7 +15,7 @@ def play(file_path: str):
         placeholder = st.empty()
         # Construct the HTML for the audio player
         md = f"""
-            <audio autoplay>
+            <audio autoplay controls playbackRate="{speed}">
                 <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
                 Your browser does not support the audio element.
             </audio>
