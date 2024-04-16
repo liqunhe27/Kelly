@@ -11,7 +11,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def tts(text, mute=False):
     response = client.audio.speech.create(
         model="tts-1",
-        voice="nova",
+        voice="shimmer",
         input=text
     )
 
