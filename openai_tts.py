@@ -24,9 +24,9 @@ def tts(text, mute=False):
     response.stream_to_file(speech_file_path)
 
     # adjust speed
-    audio = AudioSegment.from_file("temp.mp3")
+    audio = AudioSegment.from_file(speech_file_path)
     adjusted_audio = audio.speedup(playback_speed=0.6)
-    adjusted_audio.export("temp.mp3", format="mp3")
+    adjusted_audio.export(speech_file_path, format="mp3")
 
     # play it
     if not mute:
