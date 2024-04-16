@@ -2,6 +2,7 @@
 import os
 from openai import OpenAI
 from audio_player import play
+from pydub import AudioSegment
 
 # Initialise the OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -21,6 +22,11 @@ def tts(text, mute=False):
         os.makedirs(os.path.dirname(speech_file_path), exist_ok=True)
 
     response.stream_to_file(speech_file_path)
+
+    # adjust speed
+    audio = AudioSegment.from_file("temp.mp3")
+    adjusted_audio = audio.speedup(playback_speed=0.6)
+    adjusted_audio.export("temp.mp3", format="mp3")
 
     # play it
     if not mute:

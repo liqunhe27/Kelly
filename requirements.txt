@@ -1,3 +1,4 @@
 streamlit~=1.31.1
 st-files-connection
 s3fs
+pydub~=0.25.1
