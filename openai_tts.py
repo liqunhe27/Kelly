@@ -25,7 +25,7 @@ def tts(text, mute=False):
 
     # change speed
     audio = AudioSegment.from_file(speech_file_path)
-    adjusted_audio = audio.slow_down(playback_speed=0.6)
+    adjusted_audio = audio.speedup(playback_speed=0.6)
     adjusted_audio.export(speech_file_path, format="mp3")
 
     # play it
