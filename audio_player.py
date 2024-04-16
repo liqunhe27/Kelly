@@ -15,10 +15,14 @@ def play(file_path: str, speed: float = 0.2):
         placeholder = st.empty()
         # Construct the HTML for the audio player
         md = f"""
-            <audio autoplay controls playbackRate="{speed}">
+            <audio autoplay id="audio_player">
                 <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
                 Your browser does not support the audio element.
             </audio>
+            <script>
+                var audio = document.getElementById('audio_player');
+                audio.playbackRate = {speed};
+            </script>
             """
 
         time.sleep(1)
