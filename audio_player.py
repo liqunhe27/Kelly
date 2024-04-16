@@ -4,7 +4,7 @@ import streamlit as st
 import time
 
 
-def play(file_path, speed = 0.2):
+def play(file_path, speed=0.2):
     # Open the WAV audio file
     with open(file_path, "rb") as f:
         # Read the audio data
@@ -21,7 +21,9 @@ def play(file_path, speed = 0.2):
             </audio>
             <script>
                 var audio = document.getElementById('audio_player');
-                audio.playbackRate = {speed};
+                audio.onloadeddata = function() {{
+                    audio.playbackRate = {speed};
+                }};
             </script>
             """
 
