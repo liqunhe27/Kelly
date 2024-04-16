@@ -27,7 +27,7 @@ def tts(text, mute=False):
     audio = AudioSegment.from_file(speech_file_path)
     adjusted_audio = audio._spawn(audio.raw_data, overrides={
         "frame_rate": int(audio.frame_rate * 0.8)
-    })
+    }) + 2
     adjusted_audio.export(speech_file_path, format="mp3")
 
     # play it
