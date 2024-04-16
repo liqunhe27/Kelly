@@ -4,7 +4,7 @@ import streamlit as st
 import time
 
 
-def play(file_path: str, speed: float = 0.6):
+def play(file_path: str, speed: float = 0.2):
     # Open the WAV audio file
     with open(file_path, "rb") as f:
         # Read the audio data
